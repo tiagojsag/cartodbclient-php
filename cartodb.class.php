@@ -41,7 +41,7 @@ class CartoDBClient {
     }
     $this->TEMP_TOKEN_FILE_PATH = sys_get_temp_dir() . '/cartodbtempkey.txt';
     $this->OAUTH_URL = 'https://' . $this->subdomain . '.cartodb.com/oauth/';
-    $this->API_URL = 'https://' . $this->subdomain . '.cartodb.com/api/v1/';
+    $this->API_URL = 'https://' . $this->subdomain . '.cartodb.com/api/v2/';
 
     try {
       if (file_exists($this->TEMP_TOKEN_FILE_PATH)) {
@@ -100,10 +100,11 @@ class CartoDBClient {
 
   public function runSql($sql) {
     $params = array('q' => $sql);
+//     $params['api_key'] = "your-api-key";
     $response = $this->request('sql', 'POST', array('params' => $params));
 
     if ($response['info']['http_code'] != 200) {
-      throw new Exception('There was a problem with your request: ' . $response['return']);
+      throw new Exception('There was a problem with your request: ' . var_export($response['return']));
     }
     return $response;
   }
